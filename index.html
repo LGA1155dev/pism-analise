@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>PISM Intelligence — Análise de dados em tempo real</title>
+  <meta name="description" content="A camada de inteligência do PISM: dados dispersos transformados em decisões, visualizados em um único painel Power BI." />
+  <meta name="color-scheme" content="dark" />
+
+  <!-- Tipografia: Space Grotesk (display), Inter (corpo), JetBrains Mono (dados/utilitário) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="stylesheet" href="./css/components.css" />
+  <link rel="stylesheet" href="./css/animations.css" />
+</head>
+<body>
+
+  <!-- ================= LOADER ================= -->
+  <div id="loader" class="loader" aria-hidden="true">
+    <div class="loader__inner">
+      <div class="loader__mark">
+        <span class="loader__mark-bracket">[</span>
+        <span class="loader__mark-text">PISM</span>
+        <span class="loader__mark-bracket">]</span>
+      </div>
+      <div class="loader__bar-track">
+        <div class="loader__bar-fill" id="loaderBarFill"></div>
+      </div>
+      <div class="loader__percent" id="loaderPercent">0%</div>
+      <div class="loader__status" id="loaderStatus">carregando ativos</div>
+    </div>
+  </div>
+
+  <!-- ================= CURSOR ================= -->
+  <div class="cursor" id="cursorDot" aria-hidden="true"></div>
+  <div class="cursor cursor--ring" id="cursorRing" aria-hidden="true"></div>
+
+  <!-- ================= NOISE + GRID OVERLAYS ================= -->
+  <canvas id="noiseCanvas" class="noise-layer" aria-hidden="true"></canvas>
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <!-- ================= NAVBAR ================= -->
+  <header class="navbar" data-reveal="nav">
+    <div class="navbar__inner">
+      <a href="#hero" class="navbar__logo">
+        <span class="navbar__logo-mark"></span>
+        PISM <span class="navbar__logo-thin">Intelligence</span>
+      </a>
+
+      <nav class="navbar__links" aria-label="Navegação principal">
+        <a href="#painel" class="navbar__link" data-magnetic>Painel</a>
+        <a href="#metricas" class="navbar__link" data-magnetic>Métricas</a>
+        <a href="#processo" class="navbar__link" data-magnetic>Como funciona</a>
+        <a href="#recursos" class="navbar__link" data-magnetic>Recursos</a>
+      </nav>
+
+      <a href="#cta" class="btn btn--ghost btn--small" data-magnetic>
+        <span>Acessar painel</span>
+      </a>
+    </div>
+  </header>
+
+  <main id="top">
+
+
+
+    <!-- ================= HERO ================= -->
+    <section id="hero" class="hero">
+      <canvas id="particlesCanvas" class="hero__particles" aria-hidden="true"></canvas>
+      <canvas id="heroCanvas" class="hero__canvas" aria-hidden="true"></canvas>
+      <div class="hero__spotlight" id="heroSpotlight" aria-hidden="true"></div>
+
+      <div class="hero__content">
+        <p class="eyebrow" data-split-chars>Programa Integrado de Saúde e Monitoramento</p>
+
+        <h1 class="hero__title">
+          <span class="hero__title-line" data-split-words>Dados dispersos.</span>
+          <span class="hero__title-line hero__title-line--accent" data-split-words>Uma única verdade.</span>
+        </h1>
+
+        <p class="hero__lead" data-reveal="fade-up">
+          O PISM Intelligence reúne todos os indicadores do programa em um painel Power BI
+          vivo — atualizado, cruzado e pronto para decisão, sem planilhas soltas.
+        </p>
+
+        <div class="hero__actions" data-reveal="fade-up">
+          <a href="#painel" class="btn btn--primary" data-magnetic>
+            <span>Ver o painel</span>
+            <svg viewBox="0 0 16 16" width="16" height="16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="#processo" class="btn btn--ghost" data-magnetic>
+            <span>Como funciona</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="hero__scroll-cue" aria-hidden="true">
+        <span class="hero__scroll-line"></span>
+        <span class="hero__scroll-label">role para explorar</span>
+      </div>
+    </section>
+
+    <!-- ================= INTRO / PROBLEMA ================= -->
+    <section class="intro">
+      <div class="intro__inner">
+        <span class="section-eyebrow">O problema</span>
+        <p class="intro__statement" data-split-words>
+          Cada secretaria guarda sua própria versão dos números. Nenhuma delas conversa
+          com a outra. O resultado é sempre o mesmo — decisões tomadas tarde demais,
+          com dados que já mudaram.
+        </p>
+      </div>
+    </section>
+
+
+
+    <!-- ================= PAINEL (horizontal scroll) ================= -->
+    <section id="painel" class="showcase">
+      <div class="showcase__header">
+        <span class="section-eyebrow">O painel</span>
+        <h2 class="section-title" data-split-words>Quatro visões, um só painel.</h2>
+      </div>
+
+      <div class="showcase__track" id="showcaseTrack">
+        <article class="showcase-card" data-tilt>
+          <div class="showcase-card__glow"></div>
+          <span class="showcase-card__index">01</span>
+          <h3 class="showcase-card__title">Visão Geral</h3>
+          <p class="showcase-card__desc">Todos os indicadores do PISM em um único painel-resumo, atualizado continuamente.</p>
+          <div class="showcase-card__chart" aria-hidden="true">
+            <svg viewBox="0 0 240 100" class="draw-svg">
+              <path d="M4 80 L40 55 L76 62 L112 30 L148 40 L184 12 L236 22" fill="none" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </div>
+        </article>
+
+        <article class="showcase-card" data-tilt>
+          <div class="showcase-card__glow"></div>
+          <span class="showcase-card__index">02</span>
+          <h3 class="showcase-card__title">Indicadores Regionais</h3>
+          <p class="showcase-card__desc">Comparativo entre estados e municípios, com filtros cruzados em tempo real.</p>
+          <div class="showcase-card__chart" aria-hidden="true">
+            <svg viewBox="0 0 240 100" class="draw-svg">
+              <path d="M4 30 L40 60 L76 20 L112 70 L148 35 L184 55 L236 18" fill="none" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </div>
+        </article>
+
+        <article class="showcase-card" data-tilt>
+          <div class="showcase-card__glow"></div>
+          <span class="showcase-card__index">03</span>
+          <h3 class="showcase-card__title">Tendências</h3>
+          <p class="showcase-card__desc">Séries históricas e projeções, com detecção automática de anomalias.</p>
+          <div class="showcase-card__chart" aria-hidden="true">
+            <svg viewBox="0 0 240 100" class="draw-svg">
+              <path d="M4 70 L40 66 L76 50 L112 52 L148 28 L184 30 L236 8" fill="none" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </div>
+        </article>
+
+        <article class="showcase-card" data-tilt>
+          <div class="showcase-card__glow"></div>
+          <span class="showcase-card__index">04</span>
+          <h3 class="showcase-card__title">Comparativos</h3>
+          <p class="showcase-card__desc">Metas versus realizado, lado a lado, por programa e por período.</p>
+          <div class="showcase-card__chart" aria-hidden="true">
+            <svg viewBox="0 0 240 100" class="draw-svg">
+              <path d="M4 50 L40 48 L76 55 L112 20 L148 42 L184 15 L236 34" fill="none" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ================= MÉTRICAS ================= -->
+    <section id="metricas" class="metrics">
+      <div class="metrics__header">
+        <span class="section-eyebrow">Em números</span>
+        <h2 class="section-title" data-split-words>O que o painel monitora agora.</h2>
+      </div>
+
+      <div class="metrics__grid">
+        <div class="metric-card">
+          <span class="metric-card__value" data-counter data-target="42" data-suffix="">0</span>
+          <span class="metric-card__label">indicadores monitorados</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-card__value" data-counter data-target="12" data-suffix="">0</span>
+          <span class="metric-card__label">estados conectados</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-card__value" data-counter data-target="98" data-suffix=",7%">0</span>
+          <span class="metric-card__label">precisão de sincronização</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-card__value" data-counter data-target="3" data-suffix=",2s">0</span>
+          <span class="metric-card__label">tempo médio de atualização</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PROCESSO ================= -->
+    <section id="processo" class="process">
+      <div class="process__header">
+        <span class="section-eyebrow">O caminho do dado</span>
+        <h2 class="section-title" data-split-words>Da planilha solta ao painel vivo.</h2>
+      </div>
+
+      <ol class="process__list">
+        <li class="process-step" data-reveal="fade-up">
+          <span class="process-step__index">01</span>
+          <h3 class="process-step__title">Coleta</h3>
+          <p class="process-step__desc">Conectores automáticos puxam os dados direto das fontes de cada secretaria.</p>
+        </li>
+        <li class="process-step" data-reveal="fade-up">
+          <span class="process-step__index">02</span>
+          <h3 class="process-step__title">Padronização</h3>
+          <p class="process-step__desc">Nomes, unidades e períodos são normalizados para que tudo fale a mesma língua.</p>
+        </li>
+        <li class="process-step" data-reveal="fade-up">
+          <span class="process-step__index">03</span>
+          <h3 class="process-step__title">Modelagem</h3>
+          <p class="process-step__desc">Relações entre indicadores são mapeadas em um modelo único, sem duplicidade.</p>
+        </li>
+        <li class="process-step" data-reveal="fade-up">
+          <span class="process-step__index">04</span>
+          <h3 class="process-step__title">Visualização</h3>
+          <p class="process-step__desc">O resultado chega ao Power BI pronto para leitura — sem tratamento manual.</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ================= RECURSOS ================= -->
+    <section id="recursos" class="features">
+      <div class="features__header">
+        <span class="section-eyebrow">Recursos</span>
+        <h2 class="section-title" data-split-words>Construído para quem decide.</h2>
+      </div>
+
+      <div class="features__grid">
+        <div class="feature-card" data-reveal="scale-in">
+          <div class="feature-card__icon">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M4 18V10M12 18V4M20 18v-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </div>
+          <h3 class="feature-card__title">Atualização contínua</h3>
+          <p class="feature-card__desc">Os dados são sincronizados automaticamente, sem exportações manuais.</p>
+        </div>
+
+        <div class="feature-card" data-reveal="scale-in">
+          <div class="feature-card__icon">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 3v18M3 12h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.6"/></svg>
+          </div>
+          <h3 class="feature-card__title">Cruzamento entre bases</h3>
+          <p class="feature-card__desc">Indicadores de secretarias diferentes são comparados lado a lado.</p>
+        </div>
+
+        <div class="feature-card" data-reveal="scale-in">
+          <div class="feature-card__icon">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4L19 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3 class="feature-card__title">Alertas de anomalia</h3>
+          <p class="feature-card__desc">Variações fora do padrão são sinalizadas antes de virar problema.</p>
+        </div>
+
+        <div class="feature-card" data-reveal="scale-in">
+          <div class="feature-card__icon">
+            <svg viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="3" stroke="currentColor" stroke-width="1.6"/><path d="M8 9h8M8 13h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </div>
+          <h3 class="feature-card__title">Filtros por região</h3>
+          <p class="feature-card__desc">Do estado ao município, sem perder o contexto do todo.</p>
+        </div>
+
+        <div class="feature-card" data-reveal="scale-in">
+          <div class="feature-card__icon">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4L12 2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+          </div>
+          <h3 class="feature-card__title">Metas versus realizado</h3>
+          <p class="feature-card__desc">Acompanhamento direto do que foi planejado contra o que aconteceu.</p>
+        </div>
+
+        <div class="feature-card" data-reveal="scale-in">
+          <div class="feature-card__icon">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 21c-4.5-3-7.5-6.5-7.5-10.5A7.5 7.5 0 0112 3a7.5 7.5 0 017.5 7.5C19.5 14.5 16.5 18 12 21z" stroke="currentColor" stroke-width="1.6"/></svg>
+          </div>
+          <h3 class="feature-card__title">Acesso controlado</h3>
+          <p class="feature-card__desc">Cada perfil vê exatamente o recorte de dados que precisa ver.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CTA ================= -->
+    <section id="cta" class="cta">
+      <div class="cta__glow" aria-hidden="true"></div>
+      <span class="section-eyebrow">Pronto para come\u00e7ar</span>
+      <h2 class="cta__title" data-split-words>Veja o painel do PISM funcionando.</h2>
+      <p class="cta__lead">Acesso guiado, sem instalação. Leva menos de dois minutos.</p>
+      <a href="#top" class="btn btn--primary btn--large" data-magnetic>
+        <span>Solicitar acesso</span>
+        <svg viewBox="0 0 16 16" width="16" height="16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </section>
+
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__brand">
+        <span class="navbar__logo-mark"></span>
+        PISM <span class="navbar__logo-thin">Intelligence</span>
+      </div>
+      <nav class="footer__links" aria-label="Links do rodapé">
+        <a href="#painel">Painel</a>
+        <a href="#metricas">Métricas</a>
+        <a href="#processo">Como funciona</a>
+        <a href="#recursos">Recursos</a>
+      </nav>
+      <p class="footer__meta">© <span id="footerYear"></span> PISM Intelligence. Painel construído sobre Power BI.</p>
+    </div>
+  </footer>
+
+  <!-- ================= LIBS (CDN) ================= -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+
+  <!-- ================= APP (ES Modules) ================= -->
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>

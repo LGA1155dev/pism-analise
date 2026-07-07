@@ -1,0 +1,2 @@
+Coloque aqui o arquivo notebook.glb (referenciado por js/hero3d.js).
+Caminho esperado: models/notebook.glb

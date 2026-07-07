@@ -1,0 +1,108 @@
+/* =========================================================
+   animations.css — keyframes e estados iniciais de reveal
+   As classes `is-visible` / `is-revealed` são adicionadas via
+   GSAP (scroll.js), então aqui definimos apenas o estado
+   "antes" (oculto) e as keyframes usadas em toda a página.
+   ========================================================= */
+
+/* ---------- Estado inicial dos elementos revelados por scroll ---------- */
+[data-reveal="fade-up"] {
+  opacity: 0;
+  transform: translateY(28px);
+}
+
+[data-reveal="scale-in"] {
+  opacity: 0;
+  transform: scale(0.92);
+}
+
+[data-reveal="nav"] {
+  opacity: 0;
+  transform: translateY(-16px);
+}
+
+/* Palavras/letras usadas pelo split-text (scroll.js insere os spans) */
+.word,
+.char {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+[data-split-words] .word,
+[data-split-chars] .char {
+  opacity: 0;
+  transform: translateY(0.6em);
+}
+
+/* Traço de SVG (mask reveal) — stroke-dasharray é setado via JS,
+   aqui apenas garantimos que a transição fique suave */
+.draw-svg path {
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+}
+
+/* ---------- Tilt cards ---------- */
+[data-tilt] {
+  transition: transform 0.15s var(--ease-out);
+}
+
+/* ---------- Botões magnéticos ---------- */
+[data-magnetic] {
+  transition: transform 0.25s var(--ease-out);
+}
+
+/* ---------- Keyframes ---------- */
+@keyframes scroll-cue-pulse {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+    opacity: 0.4;
+  }
+  50% {
+    transform: scaleY(1);
+    transform-origin: top;
+    opacity: 1;
+  }
+  51% {
+    transform-origin: bottom;
+  }
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+    opacity: 0.4;
+  }
+}
+
+@keyframes ripple-expand {
+  from {
+    transform: scale(0);
+    opacity: 0.6;
+  }
+  to {
+    transform: scale(3.2);
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.cta__glow {
+  animation: pulse-glow 6s ease-in-out infinite;
+}
