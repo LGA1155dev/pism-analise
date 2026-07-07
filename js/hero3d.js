@@ -193,7 +193,7 @@ export class Hero3D {
     const loader = new THREE.GLTFLoader();
 
     loader.load(
-      './models/macbook.glb',
+      './models/notebook.glb',
       (gltf) => {
         const model = gltf.scene;
         let meshCount = 0;
