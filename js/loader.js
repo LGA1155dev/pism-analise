@@ -59,7 +59,7 @@ export function initLoader() {
    * CORS, etc.), resolve mesmo assim para não travar o loader — o
    * hero3d.js fará seu próprio carregamento via GLTFLoader depois.
    */
-  const modelTask = fetch('/models/macbook.glb')
+  const modelTask = fetch('/models/model.glb')
     .then((res) => {
       if (!res.body || !res.ok) return;
       const total = Number(res.headers.get('content-length')) || 0;

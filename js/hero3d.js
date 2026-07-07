@@ -193,7 +193,7 @@ export class Hero3D {
     const loader = new THREE.GLTFLoader();
 
     loader.load(
-      './models/notebook.glb',
+      '/models/model.glb',
       (gltf) => {
         const model = gltf.scene;
         let meshCount = 0;
@@ -257,7 +257,7 @@ export class Hero3D {
       undefined,
       (error) => {
         console.error(
-          '[Hero3D] Falha ao carregar ./models/notebook.glb — verifique se o ' +
+          '[Hero3D] Falha ao carregar model.glb — verifique se o ' +
             'caminho está correto, se o servidor local está rodando, e se o ' +
             'arquivo é realmente um .glb binário válido (não um ponteiro de ' +
             'Git LFS nem um .gltf separado sem os arquivos .bin/texturas).',

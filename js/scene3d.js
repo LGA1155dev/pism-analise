@@ -14,7 +14,7 @@
 const THREE_CDN = 'https://unpkg.com/three@0.160.0/build/three.module.js';
 const GLTF_LOADER_CDN = 'https://unpkg.com/three@0.160.0/examples/jsm/loaders/GLTFLoader.js';
 
-const MODEL_PATH = '../models/model.glb';
+const MODEL_PATH = '/models/model.glb';
 const MODEL_SCALE = 2;
 const MODEL_Y = 0;
 
