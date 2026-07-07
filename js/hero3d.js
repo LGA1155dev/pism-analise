@@ -227,7 +227,7 @@ export class Hero3D {
         // Normaliza a escala para caber num "palco" consistente
         const size = box.getSize(new THREE.Vector3());
         const maxDimension = Math.max(size.x, size.y, size.z) || 1;
-        const targetSize = 2.0;
+        const targetSize = 2.4;
         this._baseScale = targetSize / maxDimension;
 
         console.info(
