@@ -1,108 +1,83 @@
-/* =========================================================
-   animations.css — keyframes e estados iniciais de reveal
-   As classes `is-visible` / `is-revealed` são adicionadas via
-   GSAP (scroll.js), então aqui definimos apenas o estado
-   "antes" (oculto) e as keyframes usadas em toda a página.
-   ========================================================= */
+/* ==========================================================================
+   PISM Intelligence — animations.css
+   Revelação por IntersectionObserver + keyframes utilitárias
+   ========================================================================== */
 
-/* ---------- Estado inicial dos elementos revelados por scroll ---------- */
-[data-reveal="fade-up"] {
-  opacity: 0;
-  transform: translateY(28px);
+@keyframes scrollLine {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
 }
 
-[data-reveal="scale-in"] {
-  opacity: 0;
-  transform: scale(0.92);
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
-[data-reveal="nav"] {
+/* ----- Estado inicial dos elementos com [data-reveal] ----- */
+[data-reveal] {
   opacity: 0;
-  transform: translateY(-16px);
-}
-
-/* Palavras/letras usadas pelo split-text (scroll.js insere os spans) */
-.word,
-.char {
-  display: inline-block;
   will-change: transform, opacity;
+  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+}
+[data-reveal="fade-up"]  { transform: translateY(24px); }
+[data-reveal="scale-in"] { transform: scale(0.94); }
+[data-reveal="nav"]      { transform: translateY(-12px); }
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
 }
 
-[data-split-words] .word,
-[data-split-chars] .char {
+/* Escalonamento simples dentro de grids reveláveis */
+.metrics__grid > *,
+.features__grid > *,
+.process__list > * {
   opacity: 0;
-  transform: translateY(0.6em);
+  transform: translateY(18px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
 }
-
-/* Traço de SVG (mask reveal) — stroke-dasharray é setado via JS,
-   aqui apenas garantimos que a transição fique suave */
-.draw-svg path {
-  stroke-dasharray: 400;
-  stroke-dashoffset: 400;
+.metrics__grid.is-visible > *,
+.features__grid.is-visible > *,
+.process__list.is-visible > * {
+  opacity: 1;
+  transform: none;
 }
+.metrics__grid.is-visible > *:nth-child(1),
+.features__grid.is-visible > *:nth-child(1),
+.process__list.is-visible > *:nth-child(1) { transition-delay: 0.02s; }
+.metrics__grid.is-visible > *:nth-child(2),
+.features__grid.is-visible > *:nth-child(2),
+.process__list.is-visible > *:nth-child(2) { transition-delay: 0.08s; }
+.metrics__grid.is-visible > *:nth-child(3),
+.features__grid.is-visible > *:nth-child(3),
+.process__list.is-visible > *:nth-child(3) { transition-delay: 0.14s; }
+.metrics__grid.is-visible > *:nth-child(4),
+.features__grid.is-visible > *:nth-child(4),
+.process__list.is-visible > *:nth-child(4) { transition-delay: 0.2s; }
+.features__grid.is-visible > *:nth-child(5) { transition-delay: 0.26s; }
+.features__grid.is-visible > *:nth-child(6) { transition-delay: 0.32s; }
 
-/* ---------- Tilt cards ---------- */
-[data-tilt] {
-  transition: transform 0.15s var(--ease-out);
+/* ----- Split de texto por caractere/palavra (usado com JS) ----- */
+.split-unit {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.5em);
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
 }
+.split-unit.is-visible { opacity: 1; transform: none; }
 
-/* ---------- Botões magnéticos ---------- */
-[data-magnetic] {
-  transition: transform 0.25s var(--ease-out);
+/* ----- Loader de cena 3D ----- */
+.scene3d__spinner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-
-/* ---------- Keyframes ---------- */
-@keyframes scroll-cue-pulse {
-  0% {
-    transform: scaleY(0);
-    transform-origin: top;
-    opacity: 0.4;
-  }
-  50% {
-    transform: scaleY(1);
-    transform-origin: top;
-    opacity: 1;
-  }
-  51% {
-    transform-origin: bottom;
-  }
-  100% {
-    transform: scaleY(0);
-    transform-origin: bottom;
-    opacity: 0.4;
-  }
-}
-
-@keyframes ripple-expand {
-  from {
-    transform: scale(0);
-    opacity: 0.6;
-  }
-  to {
-    transform: scale(3.2);
-    opacity: 0;
-  }
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes pulse-glow {
-  0%,
-  100% {
-    opacity: 0.35;
-  }
-  50% {
-    opacity: 0.7;
-  }
-}
-
-.cta__glow {
-  animation: pulse-glow 6s ease-in-out infinite;
+.scene3d__spinner::after {
+  content: "";
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  border: 2px solid var(--border-strong);
+  border-top-color: var(--accent);
+  animation: spin 0.9s linear infinite;
 }
