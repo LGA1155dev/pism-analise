@@ -70,3 +70,7 @@ Depois acesse `http://localhost:5500` (ou a porta indicada).
 - `ResizeObserver` mantém o canvas do hero e das partículas sempre no tamanho correto.
 - O loader tem um tempo limite de segurança (6s) para nunca travar o usuário
   numa tela preta caso algum asset falhe ao carregar.
+
+  <img width="1422" height="747" alt="Screenshot From 2026-11-18 08-50-39" src="https://github.com/user-attachments/assets/8de97c68-dc45-44e1-ad15-474a5f2fd99c" />
+
+<img width="1422" height="747" alt="Screenshot From 2026-11-18 08-50-49" src="https://github.com/user-attachments/assets/08206567-b416-416d-b139-e50d620b190b" />
